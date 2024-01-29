@@ -1,11 +1,6 @@
 from django.shortcuts import render
-
+from .models import bird
 # Create your views here.
-
-birds = [
-    {'name': 'Jeff', 'breed': 'European Goldfinch', 'description': 'great nest builder', 'age': 5},
-    {'name': 'Dillan', 'breed': 'House Finch', 'description': 'Nestbody', 'age': 5},
-]
 
 def home(request):
     return render(request, 'home.html')
@@ -14,6 +9,9 @@ def about(request):
     return render(request, 'about.html')
 
 def finch_index(request):
-    return render(request, 'birds/index.html', {
-        'birds': birds
-    })
+    birds = bird.objects.all()
+    return render(request, 'birds/index.html', {'birds': birds})
+
+def birds_detail(request, bird_id):
+    birb = bird.objects.get(id=bird_id)
+    return render(request, 'birds/detail.html', {'bird': birb})

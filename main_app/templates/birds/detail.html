@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Finch List</h1>
+
+<div class="card">
+  <div class="card-content">
+  <span class="card-title">{{ bird.name }}</span>
+  <p>Breed: {{ bird.breed }}</p>
+  <p>Description: {{ bird.description }}</p>
+      <p>Age In Months: {{ bird.age }}</p>
+  </div>
+</div>
+
+{% endblock %}
