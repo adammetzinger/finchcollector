@@ -13,6 +13,10 @@
           <p>Age In Months: {{ bird.age }}</p>
       </div>
     </a>
+    <div class="card-action">
+      <a href="{% url 'finch_update' bird.id %}">Edit</a>
+      <a href="{% url 'finch_delete' bird.id %}">Delete</a>
+    </div>
   </div>
 {% endfor %}
 
