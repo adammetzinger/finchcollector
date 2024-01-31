@@ -11,18 +11,25 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def finch_index(request):
-    birds = Bird.objects.all()
-    return render(request, 'birds/index.html', {'birds': birds})
+def finch_index(request, bird_id):
+    birds = Bird.objects(id=bird_id)
+    return render(request, 'birds/index.html', {'birds': birds,})
 
 def birds_detail(request, bird_id):
     bird = Bird.objects.get(id=bird_id)
+    id_list = bird.toys.all().values_list('id')
+    toys_bird_doesnt_have = Toy.objects.exclude(id__in=id_list)
     feeding_form = FeedingForm()
-    return render(request, 'birds/detail.html', {'bird': bird, 'feeding_form': feeding_form })
+    feeding_form = FeedingForm()
+    return render(request, 'birds/detail.html', {
+       'bird': bird, 
+       'feeding_form': feeding_form,
+       'toys': toys_bird_doesnt_have
+        })
 
 class FinchCreate(CreateView):
     model = Bird
-    fields = '__all__'
+    fields = ['name', 'breed', 'description', 'age']
 
 class FinchUpdate(UpdateView):
     model = Bird
@@ -31,13 +38,6 @@ class FinchUpdate(UpdateView):
 class FinchDelete(DeleteView):
     model = Bird
     success_url = '/birds'
-
-def cats_detail(request, bird_id):
-    bird = Bird.objects.get(id=bird_id)
-    feeding_form = FeedingForm()
-    return render(request, 'cats/detail.html', {
-        'bird': bird, 'feeding_form': feeding_form
-    })
 
 def add_feeding(request, bird_id):
     form = FeedingForm(request.POST)
