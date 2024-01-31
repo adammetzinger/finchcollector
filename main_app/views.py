@@ -15,8 +15,9 @@ def finch_index(request):
     return render(request, 'birds/index.html', {'birds': birds})
 
 def birds_detail(request, bird_id):
-    birb = Bird.objects.get(id=bird_id)
-    return render(request, 'birds/detail.html', {'bird': birb})
+    bird = Bird.objects.get(id=bird_id)
+    feeding_form = FeedingForm()
+    return render(request, 'birds/detail.html', {'bird': bird, 'feeding_form': feeding_form })
 
 class FinchCreate(CreateView):
     model = Bird
