@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Bird
+from django.views.generic import ListView, DetailView
+from .models import Bird, Toy
 from .forms import FeedingForm
 # Create your views here.
 
@@ -45,3 +46,29 @@ def add_feeding(request, bird_id):
         new_feeding.bird_id = bird_id
         new_feeding.save()
     return redirect('detail', bird_id=bird_id)
+
+class ToyList(ListView):
+  model = Toy
+
+class ToyDetail(DetailView):
+  model = Toy
+
+class ToyCreate(CreateView):
+  model = Toy
+  fields = '__all__'
+
+class ToyUpdate(UpdateView):
+  model = Toy
+  fields = ['name', 'color']
+
+class ToyDelete(DeleteView):
+  model = Toy
+  success_url = '/toys'
+
+def assoc_toy(request, bird_id, toy_id):
+   Bird.objects.get(id=bird_id).toys.add(toy_id)
+   return redirect('detail', bird_id=bird_id)
+
+def unassoc_toy(request, bird_id, toy_id):
+   Bird.objects.get(id=bird_id).toys.remove(toy_id)
+   return redirect('detail', bird_id=bird_id)
